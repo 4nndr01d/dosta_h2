@@ -7,7 +7,14 @@ This module contains a HTTP/2 settings object. This object provides a simple
 API for manipulating HTTP/2 settings, keeping track of both the current active
 state of the settings and the unacknowledged future values of the settings.
 """
-import collections
+try:
+    from collections.abc import MutableMapping
+    import collections
+except ImportError:  # pragma: no cover
+    # Python 2.7 compatibility
+    from collections import MutableMapping
+    import collections
+
 import enum
 
 from hyperframe.frame import SettingsFrame
@@ -151,7 +158,7 @@ class ChangedSetting:
         )
 
 
-class Settings(collections.MutableMapping):
+class Settings(MutableMapping):
     """
     An object that encapsulates HTTP/2 settings state.
 
